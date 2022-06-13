@@ -44,9 +44,6 @@ export const GlobaStyle = createGlobalStyle<GlobaStyleProps>`
 		background-color: ${(props) => props.backgroundColor};
 	}
 	input{
-		border:none;
-		width: 100%;
-		border-radius:5px;
-		padding:20px;
+		
 	}
 `;

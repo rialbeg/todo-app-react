@@ -25,5 +25,9 @@ export const TaskInput = styled.form`
   input {
     background: ${(props) => props.theme.inputBackgroundColor};
     margin-top: 40px;
+    border: none;
+    width: 100%;
+    border-radius: 5px;
+    padding: 20px;
   }
 `;
