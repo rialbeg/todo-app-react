@@ -43,7 +43,10 @@ export const GlobaStyle = createGlobalStyle<GlobaStyleProps>`
 		font-family: 'Josefin Sans', sans-serif;
 		background-color: ${(props) => props.backgroundColor};
 	}
-	input{
-		
+	@media(max-width:700px){
+		html{ 
+			font-size: 50%;
+		}
 	}
+	
 `;

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { ThemeData } from "../../hooks/useTheme";
-import { themes } from "../../hooks/useTheme";
 
 interface CheckboxContainerProps {
   checked: boolean;
@@ -9,13 +8,21 @@ interface CheckboxContainerProps {
 export const CheckboxContainer = styled.div<CheckboxContainerProps>`
   width: 100%;
   height: 35px;
-  padding: 2rem;
-  border-radius: 5px;
+  padding: 3rem;
+  border-bottom: 1px solid;
+  border-color: rgba(210, 211, 219, 0.2);
   font-size: 1.5rem;
   background-color: ${(props) => props.theme.inputBackgroundColor};
 
   display: flex;
   align-items: center;
+
+  &:first-child {
+    border-radius: 5px 5px 0 0;
+  }
+
+  @media (max-width: 400px) {
+  }
 `;
 
 export const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
@@ -27,18 +34,26 @@ export const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
   padding: 0;
 `;
 
-export const Text = styled.label<CheckboxContainerProps>``;
+export const Text = styled.label<CheckboxContainerProps>`
+  color: ${(props) => props.theme.textColor};
+  text-decoration: ${(props) => (props.checked ? "line-through" : "none")};
+  opacity: ${(props) => (props.checked ? 0.5 : 1)};
+  margin-left: 1.5rem;
+`;
 
 export const StyledCheckbox = styled.label<CheckboxContainerProps>`
   width: 23px;
   height: 23px;
+  min-width: 23px;
+  min-height: 23px;
   margin-right: 6px;
   background: linear-gradient(
     ${(props) =>
       props.checked ? "#57ddff" : props.theme.inputBackgroundColor},
     ${(props) => (props.checked ? "#c058f3" : props.theme.inputBackgroundColor)}
   );
-  border: 1px solid grey;
+  border: 1px solid;
+  border-color: rgba(147, 148, 165, 0.3);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -64,5 +79,17 @@ export const StyledCheckbox = styled.label<CheckboxContainerProps>`
     display: ${(props) => (props.checked ? "flex" : "none")};
     filter: invert(75%) sepia(11%) saturate(6042%) hue- rotate(30deg)
       brightness(105%) contrast(68%);
+  }
+`;
+
+export const Close = styled.img`
+  position: absolute;
+  right: 20px;
+  margin-top: -38.5px;
+
+  cursor: pointer;
+
+  @media (max-width: 700px) {
+    margin-top: -32px;
   }
 `;

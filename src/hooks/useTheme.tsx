@@ -9,6 +9,8 @@ export interface ThemeData {
   backgroundImage: string;
   themeTogglerImage: string;
   inputBackgroundColor: string;
+  textColor: string;
+  hoverColor: string;
 }
 
 interface ThemeContextData {
@@ -25,12 +27,16 @@ export const themes = {
     backgroundImage: lightBackground,
     themeTogglerImage: lightTogglerImg,
     inputBackgroundColor: "#FFFFFF",
+    textColor: "#757483",
+    hoverColor: "#000000",
   },
   dark: {
     backgroundColor: "#181824",
     backgroundImage: darkBackground,
     themeTogglerImage: darkTogglerImg,
     inputBackgroundColor: "#25273C",
+    textColor: "#A0A2BB",
+    hoverColor: "#ffffff",
   },
 };
 
