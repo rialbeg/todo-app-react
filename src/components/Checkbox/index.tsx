@@ -10,14 +10,21 @@ import {
 import CheckIcon from "../../images/icon-check.svg";
 import CloseIcon from "../../images/icon-cross.svg";
 import { useTheme } from "../../hooks/useTheme";
+import { Task } from "../MainContent";
 
 interface CheckBoxProps {
   children: ReactNode;
   updateTask: () => void;
   removeTask: () => void;
+  task: Task;
 }
 
-export function Checkbox({ children, updateTask, removeTask }: CheckBoxProps) {
+export function Checkbox({
+  children,
+  updateTask,
+  removeTask,
+  task,
+}: CheckBoxProps) {
   const [checked, setChecked] = useState(false);
   const { theme } = useTheme();
 
@@ -26,6 +33,9 @@ export function Checkbox({ children, updateTask, removeTask }: CheckBoxProps) {
     updateTask();
   }
 
+  useEffect(() => {
+    if (task.isCompleted) setChecked(true);
+  }, []);
   return (
     <>
       <CheckboxContainer

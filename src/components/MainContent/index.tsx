@@ -12,7 +12,7 @@ import {
   FooterMobile,
 } from "./style";
 
-interface Task {
+export interface Task {
   id: number;
   taskTitle: string;
   isCompleted: boolean;
@@ -28,11 +28,7 @@ export function MainContent() {
   const width = useWidth();
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [selectFilter, setSelectFilter] = useState({
-    all: true,
-    active: false,
-    completed: false,
-  } as Filters);
+  const [selectFilter, setSelectFilter] = useState([true, false, false]);
 
   function handleCreateNewTask() {
     if (!newTaskTitle) return;
@@ -64,13 +60,16 @@ export function MainContent() {
   }
 
   function handleSelectFilter(e: any) {
-    const newFilter = {
-      all: false,
-      active: false,
-      completed: false,
-    };
-    const property: string = e?.target?.textContent.toLowerCase();
-    console.log(newFilter.all);
+    const newFilter = [false, false, false];
+
+    newFilter[Number(e.target.dataset.id)] =
+      !newFilter[Number(e.target.dataset.id)];
+    setSelectFilter(newFilter);
+  }
+
+  function handleRemoveCompleted() {
+    const newTasks = tasks.filter((task) => !task.isCompleted);
+    setTasks(newTasks);
   }
   return (
     <Container>
@@ -95,15 +94,43 @@ export function MainContent() {
         </div>
       </TaskInput>
       <div className="task-list">
-        {tasks.map((task) => (
-          <Checkbox
-            key={task.id}
-            updateTask={() => handleUpdateTask(task.id)}
-            removeTask={() => handleRemoveTask(task.id)}
-          >
-            {task.taskTitle}
-          </Checkbox>
-        ))}
+        {selectFilter[0] &&
+          tasks.map((task) => (
+            <Checkbox
+              key={task.id}
+              updateTask={() => handleUpdateTask(task.id)}
+              removeTask={() => handleRemoveTask(task.id)}
+              task={task}
+            >
+              {task.taskTitle}
+            </Checkbox>
+          ))}
+        {selectFilter[1] &&
+          tasks
+            .filter((task) => !task.isCompleted)
+            .map((task) => (
+              <Checkbox
+                key={task.id}
+                updateTask={() => handleUpdateTask(task.id)}
+                removeTask={() => handleRemoveTask(task.id)}
+                task={task}
+              >
+                {task.taskTitle}
+              </Checkbox>
+            ))}
+        {selectFilter[2] &&
+          tasks
+            .filter((task) => task.isCompleted)
+            .map((task) => (
+              <Checkbox
+                key={task.id}
+                updateTask={() => handleUpdateTask(task.id)}
+                removeTask={() => handleRemoveTask(task.id)}
+                task={task}
+              >
+                {task.taskTitle}
+              </Checkbox>
+            ))}
       </div>
 
       <Footer theme={theme}>
@@ -113,28 +140,36 @@ export function MainContent() {
             <div className="filter-buttons">
               <FilterOption
                 theme={theme}
-                selected={selectFilter.all}
+                selected={selectFilter[0]}
                 onClick={(e) => handleSelectFilter(e)}
+                data-id="0"
               >
                 All
               </FilterOption>
               <FilterOption
                 theme={theme}
-                selected={selectFilter.active}
+                selected={selectFilter[1]}
                 onClick={(e) => handleSelectFilter(e)}
+                data-id="1"
               >
                 Active
               </FilterOption>
               <FilterOption
                 theme={theme}
-                selected={selectFilter.completed}
+                selected={selectFilter[2]}
                 onClick={(e) => handleSelectFilter(e)}
+                data-id="2"
               >
-                Complete
+                Completed
               </FilterOption>
             </div>
           )}
-          <div className="clear-completed">Clear Completed</div>
+          <div
+            className="clear-completed"
+            onClick={() => handleRemoveCompleted()}
+          >
+            Clear Completed
+          </div>
         </div>
       </Footer>
       {width <= 375 && (
