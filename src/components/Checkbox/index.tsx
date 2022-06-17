@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import {
   CheckboxContainer,
   HiddenCheckbox,
@@ -13,15 +13,19 @@ import { useTheme } from "../../hooks/useTheme";
 
 interface CheckBoxProps {
   children: ReactNode;
+  updateTask: () => void;
+  removeTask: () => void;
 }
 
-export function Checkbox({ children }: CheckBoxProps) {
+export function Checkbox({ children, updateTask, removeTask }: CheckBoxProps) {
   const [checked, setChecked] = useState(false);
   const { theme } = useTheme();
 
   function handleCheckboxChange() {
     setChecked(!checked);
+    updateTask();
   }
+
   return (
     <>
       <CheckboxContainer
@@ -42,6 +46,7 @@ export function Checkbox({ children }: CheckBoxProps) {
         alt="check icon"
         style={{ width: "1.5rem" }}
         src={CloseIcon}
+        onClick={removeTask}
       />
     </>
   );

@@ -92,4 +92,8 @@ export const Close = styled.img`
   @media (max-width: 700px) {
     margin-top: -32px;
   }
+  @media (max-width: 300px) {
+    margin-top: -25px;
+    right: 10px;
+  }
 `;

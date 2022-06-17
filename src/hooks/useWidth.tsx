@@ -7,5 +7,5 @@ export function useWidth() {
     window.addEventListener("resize", () => setWidth(window.innerWidth));
   }, []);
 
-  return { width, setWidth };
+  return width;
 }

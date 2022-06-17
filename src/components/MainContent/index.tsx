@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { ReactEventHandler, ReactNode, useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { useWidth } from "../../hooks/useWidth";
+import { randomIntFromInterval } from "../../utils/random";
 import { Checkbox } from "../Checkbox";
 import { ThemeTogglerButton } from "../ThemeTogglerButton";
 import {
@@ -11,18 +12,79 @@ import {
   FooterMobile,
 } from "./style";
 
+interface Task {
+  id: number;
+  taskTitle: string;
+  isCompleted: boolean;
+}
+
+interface Filters {
+  all: boolean;
+  active: boolean;
+  completed: boolean;
+}
 export function MainContent() {
   const { theme } = useTheme();
-  const { width } = useWidth();
+  const width = useWidth();
   const [newTaskTitle, setNewTaskTitle] = useState("");
-  console.log(width);
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [selectFilter, setSelectFilter] = useState({
+    all: true,
+    active: false,
+    completed: false,
+  } as Filters);
+
+  function handleCreateNewTask() {
+    if (!newTaskTitle) return;
+    const newTask = {
+      id: randomIntFromInterval(1, 100),
+      taskTitle: newTaskTitle,
+      isCompleted: false,
+    };
+    setTasks([...tasks, newTask]);
+  }
+
+  function handleUpdateTask(id: number) {
+    const taskIndex = tasks.findIndex((task) => task.id === id);
+
+    const tasksCopy = [...tasks];
+
+    tasksCopy[taskIndex].isCompleted = !tasksCopy[taskIndex].isCompleted;
+
+    setTasks(tasksCopy);
+  }
+
+  function handleRemoveTask(id: number) {
+    const taskIndex = tasks.findIndex((task) => task.id === id);
+    const tasksCopy = [...tasks];
+
+    tasksCopy.splice(taskIndex, 1);
+
+    setTasks(tasksCopy);
+  }
+
+  function handleSelectFilter(e: any) {
+    const newFilter = {
+      all: false,
+      active: false,
+      completed: false,
+    };
+    const property: string = e?.target?.textContent.toLowerCase();
+    console.log(newFilter.all);
+  }
   return (
     <Container>
       <div className="title">
         <h1>TODO</h1>
         <ThemeTogglerButton />
       </div>
-      <TaskInput theme={theme} onSubmit={(e) => e.preventDefault()}>
+      <TaskInput
+        theme={theme}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleCreateNewTask();
+        }}
+      >
         <div className="task-input">
           <div className="check-circle"></div>
           <input
@@ -33,23 +95,41 @@ export function MainContent() {
         </div>
       </TaskInput>
       <div className="task-list">
-        <Checkbox>My huge long phrase description task oh my god</Checkbox>
-        <Checkbox>Task 2</Checkbox>
-        <Checkbox>Task 3</Checkbox>
+        {tasks.map((task) => (
+          <Checkbox
+            key={task.id}
+            updateTask={() => handleUpdateTask(task.id)}
+            removeTask={() => handleRemoveTask(task.id)}
+          >
+            {task.taskTitle}
+          </Checkbox>
+        ))}
       </div>
 
       <Footer theme={theme}>
         <div className="footer-container">
-          <div className="total-items">5 items left</div>
+          <div className="total-items">{tasks.length} items left</div>
           {width > 375 && (
             <div className="filter-buttons">
-              <FilterOption theme={theme} selected={true}>
+              <FilterOption
+                theme={theme}
+                selected={selectFilter.all}
+                onClick={(e) => handleSelectFilter(e)}
+              >
                 All
               </FilterOption>
-              <FilterOption theme={theme} selected={false}>
+              <FilterOption
+                theme={theme}
+                selected={selectFilter.active}
+                onClick={(e) => handleSelectFilter(e)}
+              >
                 Active
               </FilterOption>
-              <FilterOption theme={theme} selected={false}>
+              <FilterOption
+                theme={theme}
+                selected={selectFilter.completed}
+                onClick={(e) => handleSelectFilter(e)}
+              >
                 Complete
               </FilterOption>
             </div>
@@ -59,7 +139,6 @@ export function MainContent() {
       </Footer>
       {width <= 375 && (
         <FooterMobile theme={theme}>
-          {/* filter-buttons */}
           <FilterOption theme={theme} selected={true}>
             All
           </FilterOption>

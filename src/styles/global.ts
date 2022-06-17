@@ -48,5 +48,10 @@ export const GlobaStyle = createGlobalStyle<GlobaStyleProps>`
 			font-size: 50%;
 		}
 	}
+	@media(max-width:300px){
+		html{ 
+			font-size: 40%;
+		}
+	}
 	
 `;
