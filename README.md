@@ -6,6 +6,7 @@ Esta é uma solução para o [Todo app challenge on Frontend Mentor](https://www
 
 - [Overview](#overview)
   - [O Desafio](#o-desafio)
+  - [Como executar](#como-executar)
   - [Screenshot](#screenshot)
   - [Links](#links)
 - [Meu processo](#meu-processo)
@@ -31,6 +32,20 @@ Usuários devem ser capazes de:
 - Trocar o tema entre claro e escuro
 - **Bonus**: Drag and drop e reordenar as tarefas na lista
 
+### Como executar
+
+Clone a pasta do projeto, abra o terminal na pasta principal e execute os seguintes comandos. Também é possível ver o app rodando em [Links](#links).
+
+```bash
+  yarn install && yarn start
+```
+
+ou
+
+```bash
+  npm install && npm start
+```
+
 ### Screenshot
 
 ![](./todo-app-react.gif)
@@ -38,7 +53,7 @@ Usuários devem ser capazes de:
 ### Links
 
 - Solution URL: [github](https://github.com/rialbeg/todo-app-react)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Live Site URL: [Hospedado no vercel](https://todo-app-react-phi.vercel.app/)
 
 ## Meu processo
 
