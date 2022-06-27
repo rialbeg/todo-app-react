@@ -37,7 +37,7 @@ Usuários devem ser capazes de:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
+- Solution URL: [github](https://github.com/rialbeg/todo-app-react)
 - Live Site URL: [Add live site URL here](https://your-live-site-url.com)
 
 ## Meu processo
@@ -48,7 +48,7 @@ Usuários devem ser capazes de:
 - Flexbox
 - [Styled Components](https://styled-components.com/) - For styles
 - typescript
-- React beautiful dnd - For drag and drop
+- [React beautiful dnd](https://github.com/atlassian/react-beautiful-dnd) - For drag and drop
 - Custom hooks
 
 ### O que aprendi
@@ -98,6 +98,6 @@ Daqui em diante o plano é continuar construindo aplicações para me acostumar 
 
 ## Autor
 
-- Website - [Add your name here](https://www.your-site.com)
-- Frontend Mentor - [@yourusername](https://www.frontendmentor.io/profile/yourusername)
-- Twitter - [@yourusername](https://www.twitter.com/yourusername)
+- Website - [Gabriel Mascarenhas](https://rialbeg.github.io/portfolio/)
+- Frontend Mentor - [@rialbeg](https://www.frontendmentor.io/profile/rialbeg)
+- Linkedin - [@gsamascarenhas](https://www.linkedin.com/in/gsamascarenhas/)
