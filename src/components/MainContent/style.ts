@@ -25,6 +25,11 @@ export const Container = styled.main`
     position: relative;
   }
 
+  p.end-note {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-top: 40px;
+  }
   @media (max-width: 550px) {
     max-width: 50rem;
   }

@@ -11,12 +11,15 @@ import CheckIcon from "../../images/icon-check.svg";
 import CloseIcon from "../../images/icon-cross.svg";
 import { useTheme } from "../../hooks/useTheme";
 import { Task } from "../MainContent";
+import { DraggableProvided } from "react-beautiful-dnd";
 
 interface CheckBoxProps {
   children: ReactNode;
   updateTask: () => void;
   removeTask: () => void;
   task: Task;
+  provided: DraggableProvided;
+  innerRef: (element: HTMLElement | null | undefined) => any;
 }
 
 export function Checkbox({
@@ -24,6 +27,8 @@ export function Checkbox({
   updateTask,
   removeTask,
   task,
+  provided,
+  innerRef,
 }: CheckBoxProps) {
   const [checked, setChecked] = useState(false);
   const { theme } = useTheme();
@@ -37,7 +42,11 @@ export function Checkbox({
     if (task.isCompleted) setChecked(true);
   }, []);
   return (
-    <>
+    <div
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
+      ref={innerRef}
+    >
       <CheckboxContainer
         theme={theme}
         checked={checked}
@@ -58,6 +67,6 @@ export function Checkbox({
         src={CloseIcon}
         onClick={removeTask}
       />
-    </>
+    </div>
   );
 }

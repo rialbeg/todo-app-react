@@ -1,4 +1,4 @@
-import { ReactEventHandler, ReactNode, useState } from "react";
+import { useState } from "react";
 import { useTheme } from "../../hooks/useTheme";
 import { useWidth } from "../../hooks/useWidth";
 import { randomIntFromInterval } from "../../utils/random";
@@ -11,6 +11,13 @@ import {
   FilterOption,
   FooterMobile,
 } from "./style";
+
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
 
 export interface Task {
   id: number;
@@ -28,7 +35,11 @@ export function MainContent() {
   const width = useWidth();
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [selectFilter, setSelectFilter] = useState([true, false, false]);
+  const [selectFilter, setSelectFilter] = useState<boolean[]>([
+    true,
+    false,
+    false,
+  ]);
 
   function handleCreateNewTask() {
     if (!newTaskTitle) return;
@@ -71,6 +82,23 @@ export function MainContent() {
     const newTasks = tasks.filter((task) => !task.isCompleted);
     setTasks(newTasks);
   }
+
+  function handleOnDragEnd(result: DropResult) {
+    if (!result.destination) return;
+
+    const items = Array.from(tasks);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setTasks(items);
+  }
+
+  function handleFilterTasks(filter: boolean[]) {
+    if (filter[0]) return tasks;
+    else if (filter[1]) return tasks.filter((task) => !task.isCompleted);
+    else if (filter[2]) return tasks.filter((task) => task.isCompleted);
+    return tasks;
+  }
   return (
     <Container>
       <div className="title">
@@ -93,46 +121,104 @@ export function MainContent() {
           />
         </div>
       </TaskInput>
-      <div className="task-list">
-        {selectFilter[0] &&
-          tasks.map((task) => (
-            <Checkbox
-              key={task.id}
-              updateTask={() => handleUpdateTask(task.id)}
-              removeTask={() => handleRemoveTask(task.id)}
-              task={task}
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <Droppable droppableId="taskList">
+          {(provided) => (
+            <div
+              className="task-list"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
             >
-              {task.taskTitle}
-            </Checkbox>
-          ))}
-        {selectFilter[1] &&
-          tasks
-            .filter((task) => !task.isCompleted)
-            .map((task) => (
-              <Checkbox
-                key={task.id}
-                updateTask={() => handleUpdateTask(task.id)}
-                removeTask={() => handleRemoveTask(task.id)}
-                task={task}
-              >
-                {task.taskTitle}
-              </Checkbox>
-            ))}
-        {selectFilter[2] &&
-          tasks
-            .filter((task) => task.isCompleted)
-            .map((task) => (
-              <Checkbox
-                key={task.id}
-                updateTask={() => handleUpdateTask(task.id)}
-                removeTask={() => handleRemoveTask(task.id)}
-                task={task}
-              >
-                {task.taskTitle}
-              </Checkbox>
-            ))}
-      </div>
-
+              {handleFilterTasks(selectFilter).map((task, index) => (
+                <Draggable
+                  key={task.id}
+                  draggableId={String(task.id)}
+                  index={index}
+                >
+                  {(provided) => (
+                    <Checkbox
+                      updateTask={() => handleUpdateTask(task.id)}
+                      removeTask={() => handleRemoveTask(task.id)}
+                      task={task}
+                      provided={provided}
+                      innerRef={provided.innerRef}
+                    >
+                      {task.taskTitle}
+                    </Checkbox>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+        {/* <Droppable droppableId="taskList1">
+          {(provided) => (
+            <div
+              className="task-list"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {selectFilter[1] &&
+                tasks
+                  .filter((task) => !task.isCompleted)
+                  .map((task, index) => (
+                    <Draggable
+                      key={task.id}
+                      draggableId={String(task.id)}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <Checkbox
+                          updateTask={() => handleUpdateTask(task.id)}
+                          removeTask={() => handleRemoveTask(task.id)}
+                          task={task}
+                          provided={provided}
+                          innerRef={provided.innerRef}
+                        >
+                          {task.taskTitle}
+                        </Checkbox>
+                      )}
+                    </Draggable>
+                  ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+        <Droppable droppableId="taskList2">
+          {(provided) => (
+            <div
+              className="task-list"
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {selectFilter[2] &&
+                tasks
+                  .filter((task) => task.isCompleted)
+                  .map((task, index) => (
+                    <Draggable
+                      key={task.id}
+                      draggableId={String(task.id)}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <Checkbox
+                          updateTask={() => handleUpdateTask(task.id)}
+                          removeTask={() => handleRemoveTask(task.id)}
+                          task={task}
+                          provided={provided}
+                          innerRef={provided.innerRef}
+                        >
+                          {task.taskTitle}
+                        </Checkbox>
+                      )}
+                    </Draggable>
+                  ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable> */}
+      </DragDropContext>
       <Footer theme={theme}>
         <div className="footer-container">
           <div className="total-items">{tasks.length} items left</div>
@@ -185,6 +271,9 @@ export function MainContent() {
           </FilterOption>
         </FooterMobile>
       )}
+      <p className="end-note" style={{ color: theme.textColor }}>
+        Drag and drop to reorder list
+      </p>
     </Container>
   );
 }
