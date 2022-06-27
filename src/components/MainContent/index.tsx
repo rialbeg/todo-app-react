@@ -152,72 +152,6 @@ export function MainContent() {
             </div>
           )}
         </Droppable>
-        {/* <Droppable droppableId="taskList1">
-          {(provided) => (
-            <div
-              className="task-list"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {selectFilter[1] &&
-                tasks
-                  .filter((task) => !task.isCompleted)
-                  .map((task, index) => (
-                    <Draggable
-                      key={task.id}
-                      draggableId={String(task.id)}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <Checkbox
-                          updateTask={() => handleUpdateTask(task.id)}
-                          removeTask={() => handleRemoveTask(task.id)}
-                          task={task}
-                          provided={provided}
-                          innerRef={provided.innerRef}
-                        >
-                          {task.taskTitle}
-                        </Checkbox>
-                      )}
-                    </Draggable>
-                  ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-        <Droppable droppableId="taskList2">
-          {(provided) => (
-            <div
-              className="task-list"
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-            >
-              {selectFilter[2] &&
-                tasks
-                  .filter((task) => task.isCompleted)
-                  .map((task, index) => (
-                    <Draggable
-                      key={task.id}
-                      draggableId={String(task.id)}
-                      index={index}
-                    >
-                      {(provided) => (
-                        <Checkbox
-                          updateTask={() => handleUpdateTask(task.id)}
-                          removeTask={() => handleRemoveTask(task.id)}
-                          task={task}
-                          provided={provided}
-                          innerRef={provided.innerRef}
-                        >
-                          {task.taskTitle}
-                        </Checkbox>
-                      )}
-                    </Draggable>
-                  ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable> */}
       </DragDropContext>
       <Footer theme={theme}>
         <div className="footer-container">
@@ -260,13 +194,28 @@ export function MainContent() {
       </Footer>
       {width <= 375 && (
         <FooterMobile theme={theme}>
-          <FilterOption theme={theme} selected={true}>
+          <FilterOption
+            theme={theme}
+            selected={selectFilter[0]}
+            onClick={(e) => handleSelectFilter(e)}
+            data-id="0"
+          >
             All
           </FilterOption>
-          <FilterOption theme={theme} selected={false}>
+          <FilterOption
+            theme={theme}
+            selected={selectFilter[1]}
+            onClick={(e) => handleSelectFilter(e)}
+            data-id="1"
+          >
             Active
           </FilterOption>
-          <FilterOption theme={theme} selected={false}>
+          <FilterOption
+            theme={theme}
+            selected={selectFilter[2]}
+            onClick={(e) => handleSelectFilter(e)}
+            data-id="2"
+          >
             Complete
           </FilterOption>
         </FooterMobile>
