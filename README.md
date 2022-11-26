@@ -116,3 +116,4 @@ Daqui em diante o plano é continuar construindo aplicações para me acostumar 
 - Website - [Gabriel Mascarenhas](https://rialbeg.github.io/portfolio/)
 - Frontend Mentor - [@rialbeg](https://www.frontendmentor.io/profile/rialbeg)
 - Linkedin - [@gsamascarenhas](https://www.linkedin.com/in/gsamascarenhas/)
+  blahblah
